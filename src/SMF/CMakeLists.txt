@@ -4,6 +4,7 @@ target_sources(SMF
     PRIVATE
         SMF_context.c
         SMF_mem.c
+        SMF_window.c
 )
 
 target_include_directories(SMF

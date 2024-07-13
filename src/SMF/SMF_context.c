@@ -11,6 +11,8 @@
 
 #include "SMF_context.h"
 
+#include "SMF_window.h"
+
 #define SMF_ERROR_BUF_SIZE 256
 
 static int g_initialized = 0;
@@ -38,6 +40,8 @@ void SMF_Quit(void)
     if (g_initialized == 0) {
         return;
     }
+
+    SMF_CleanupWindow();
 
     SDL_Quit();
 

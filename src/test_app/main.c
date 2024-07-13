@@ -15,6 +15,11 @@ int main(void)
     SMF_SetErrorCallback(ErrorCallback, NULL);
     SMF_Init();
 
+    SMF_SetWindowSize(800, 600);
+    SMF_SetWindowScale(2);
+    SMF_SetWindowTitle("Test App");
+    SMF_CreateWindow();
+
     SMF_Quit();
     return 0;
 }
