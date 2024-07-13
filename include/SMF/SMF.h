@@ -88,7 +88,7 @@ int SMF_LoadImageSet(const char *path, int count, const SMF_ImageDef *defs, SMF_
 /// @param x The x dimension to retrieve (may be NULL).
 /// @param y The y dimension to retrieve (may be NULL).
 /// @return 0 for success, -1 for an error (see SMF_GetError).
-int SMF_GetImageSize(SMF_Handle image, int *x, int *y);
+int SMF_GetImageSize(SMF_Handle image, int *w, int *h);
 
 /// @brief Load a TrueType font from the filesystem at a given size.
 /// @param path The path to the font file to load.

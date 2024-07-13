@@ -20,6 +20,8 @@ int main(void)
     SMF_SetWindowTitle("Test App");
     SMF_CreateWindow();
 
+    SMF_Handle image = SMF_LoadImage("D:\\Assets.png");
+
     SMF_Event evt;
     while (1) {
         if (SMF_PollEvent(&evt) == 1) {
