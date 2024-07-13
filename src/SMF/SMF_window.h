@@ -4,3 +4,7 @@
 #pragma once
 
 void SMF_CleanupWindow(void);
+
+int SMF_IsWindowCreated(void);
+
+int SMF_GetWindowScale(void);

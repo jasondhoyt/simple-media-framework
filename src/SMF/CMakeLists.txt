@@ -3,6 +3,7 @@ add_library(SMF)
 target_sources(SMF
     PRIVATE
         SMF_context.c
+        SMF_event.c
         SMF_mem.c
         SMF_window.c
 )

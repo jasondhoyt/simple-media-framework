@@ -279,7 +279,6 @@ typedef struct SMF_Event
         struct
         {
             char text[32];
-            int len;
         } text_input;
     };
 } SMF_Event;
@@ -288,3 +287,11 @@ typedef struct SMF_Event
 /// @param event The event information to fill out if an event was processed.
 /// @return 0 if no event was processed, 1 if an event was processed, -1 for an error (see SMF_GetError).
 int SMF_PollEvent(SMF_Event *event);
+
+/// @brief Sleep for a specified amount of time.
+/// @param milliseconds Number of milliseconds to sleep for.
+void SMF_Sleep(int milliseconds);
+
+/// @brief Retrieve an incrementing timer in milliseconds.
+/// @return Number of milliseconds from some arbitrary point in time.
+uint64_t SMF_GetTicks(void);

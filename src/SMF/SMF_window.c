@@ -121,3 +121,17 @@ void SMF_CleanupWindow(void)
     SDL_DestroyRenderer(g_renderer);
     SDL_DestroyWindow(g_window);
 }
+
+int SMF_IsWindowCreated(void)
+{
+    if (!g_window) {
+        return SMF_SetError("window not created");
+    }
+
+    return 0;
+}
+
+int SMF_GetWindowScale(void)
+{
+    return g_window_scale;
+}

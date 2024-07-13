@@ -20,6 +20,23 @@ int main(void)
     SMF_SetWindowTitle("Test App");
     SMF_CreateWindow();
 
+    SMF_Event evt;
+    while (1) {
+        if (SMF_PollEvent(&evt) == 1) {
+            if (evt.type == SMF_EVENT_TYPE_QUIT) {
+                break;
+            } else if (evt.type == SMF_EVENT_TYPE_MOUSE_PRESS) {
+                printf("mouse press\n");
+            } else if (evt.type == SMF_EVENT_TYPE_MOUSE_CLICK) {
+                printf("mouse click\n");
+            } else if (evt.type == SMF_EVENT_TYPE_MOUSE_DOUBLE_CLICK) {
+                printf("mouse double-click\n");
+            }
+        }
+
+        SMF_Sleep(25);
+    }
+
     SMF_Quit();
     return 0;
 }
