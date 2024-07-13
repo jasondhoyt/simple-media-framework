@@ -5,6 +5,7 @@ target_sources(SMF
         SMF_context.c
         SMF_event.c
         SMF_handle_set.c
+        SMF_hash_map.c
         SMF_image.c
         SMF_mem.c
         SMF_window.c
