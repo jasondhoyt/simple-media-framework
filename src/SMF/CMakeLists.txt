@@ -4,6 +4,7 @@ target_sources(SMF
     PRIVATE
         SMF_context.c
         SMF_event.c
+        SMF_font.c
         SMF_handle_set.c
         SMF_hash_map.c
         SMF_image.c
@@ -20,4 +21,5 @@ target_link_libraries(SMF
     PRIVATE
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
         $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+        $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
 )

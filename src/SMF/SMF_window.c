@@ -18,22 +18,26 @@ static SDL_Renderer *g_renderer = NULL;
 
 int SMF_SetWindowSize(int w, int h)
 {
-    if (SMF_IsInitialized() == -1) {
+    if (SMF_IsInitialized() == -1)
+    {
         return -1;
     }
 
-    if (w <= 0) {
+    if (w <= 0)
+    {
         return SMF_InvalidArgError("w");
     }
 
-    if (h <= 0) {
+    if (h <= 0)
+    {
         return SMF_InvalidArgError("h");
     }
 
     g_window_width = w;
     g_window_height = h;
 
-    if (!g_window) {
+    if (!g_window)
+    {
         return 0;
     }
 
@@ -43,21 +47,25 @@ int SMF_SetWindowSize(int w, int h)
 
 int SMF_SetWindowScale(int scale)
 {
-    if (SMF_IsInitialized() == -1) {
+    if (SMF_IsInitialized() == -1)
+    {
         return -1;
     }
 
-    if (scale < 1 || scale > 4) {
+    if (scale < 1 || scale > 4)
+    {
         return SMF_InvalidArgError("scale");
     }
 
     g_window_scale = scale;
 
-    if (!g_window) {
+    if (!g_window)
+    {
         return 0;
     }
 
-    if (SDL_RenderSetLogicalSize(g_renderer, g_window_width / g_window_scale, g_window_height / g_window_scale) == -1) {
+    if (SDL_RenderSetLogicalSize(g_renderer, g_window_width / g_window_scale, g_window_height / g_window_scale) == -1)
+    {
         return SMF_SDLError();
     }
 
@@ -66,17 +74,21 @@ int SMF_SetWindowScale(int scale)
 
 int SMF_SetWindowTitle(const char *text)
 {
-    if (SMF_IsInitialized() == -1) {
+    if (SMF_IsInitialized() == -1)
+    {
         return -1;
     }
 
-    if (!text) {
+    if (!text)
+    {
         return SMF_InvalidArgError("text");
     }
 
-    if (!g_window) {
+    if (!g_window)
+    {
         size_t size = strlen(text);
-        if (size > SMF_WINDOW_TITLE_BUFFER_SIZE - 1) {
+        if (size > SMF_WINDOW_TITLE_BUFFER_SIZE - 1)
+        {
             size = SMF_WINDOW_TITLE_BUFFER_SIZE - 1;
         }
 
@@ -92,7 +104,8 @@ int SMF_SetWindowTitle(const char *text)
 
 int SMF_CreateWindow(void)
 {
-    if (g_window) {
+    if (g_window)
+    {
         return 0;
     }
 
@@ -102,12 +115,14 @@ int SMF_CreateWindow(void)
                                 g_window_width * g_window_scale,
                                 g_window_height * g_window_scale,
                                 0);
-    if (!g_window) {
+    if (!g_window)
+    {
         return SMF_SDLError();
     }
 
     g_renderer = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
-    if (!g_renderer) {
+    if (!g_renderer)
+    {
         SMF_SDLError();
         SDL_DestroyWindow(g_window);
         return -1;
@@ -124,7 +139,8 @@ void SMF_CleanupWindow(void)
 
 int SMF_IsWindowCreated(void)
 {
-    if (!g_window) {
+    if (!g_window)
+    {
         return SMF_SetError("window not created");
     }
 

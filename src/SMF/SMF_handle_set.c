@@ -24,7 +24,8 @@ int SMF_InitHandleSet(SMF_HandleSet *handle_set, SMF_HandleType type, size_t dat
     handle_set->data_cap = 16;
     handle_set->data_len = 0;
     handle_set->data = SMF_Calloc(handle_set->data_cap, handle_set->data_size);
-    if (!handle_set->data) {
+    if (!handle_set->data)
+    {
         return -1;
     }
 
@@ -35,9 +36,11 @@ void SMF_CleanHandleSet(SMF_HandleSet *handle_set)
 {
     assert(handle_set);
 
-    for (uint64_t ix = 0; ix < handle_set->data_len; ++ix) {
+    for (uint64_t ix = 0; ix < handle_set->data_len; ++ix)
+    {
         SMF_HandleObject *obj = (SMF_HandleObject *)(handle_set->data + (ix * handle_set->data_size));
-        if (obj->handle != 0) {
+        if (obj->handle != 0)
+        {
             handle_set->clean_cb(obj);
         }
     }
@@ -49,24 +52,29 @@ void *SMF_CreateHandle(SMF_HandleSet *handle_set)
 {
     assert(handle_set);
 
-    if (handle_set->next_id == 0xffffffff) {
+    if (handle_set->next_id == 0xffffffff)
+    {
         SMF_SetError("too many handles");
         return NULL;
     }
 
-    if (handle_set->data_len == handle_set->data_cap) {
-        if (handle_set->data_cap >= 0x1000000) {
+    if (handle_set->data_len == handle_set->data_cap)
+    {
+        if (handle_set->data_cap >= 0x1000000)
+        {
             SMF_SetError("too many objects");
             return NULL;
         }
 
         uint64_t new_cap = handle_set->data_cap * 2;
-        if (handle_set->data_cap > 0x1000000) {
+        if (handle_set->data_cap > 0x1000000)
+        {
             new_cap = 0x1000000;
         }
 
         char *new_data = SMF_Calloc(new_cap, handle_set->data_size);
-        if (!new_data) {
+        if (!new_data)
+        {
             return NULL;
         }
 
@@ -92,25 +100,29 @@ void *SMF_FindHandleObject(SMF_HandleSet *handle_set, uint64_t handle)
 {
     assert(handle_set);
 
-    if (handle == 0) {
+    if (handle == 0)
+    {
         SMF_SetError("invalid handle");
         return NULL;
     }
 
     SMF_HandleType type = (SMF_HandleType)SMF_HANDLE_TYPE(handle);
-    if (type != handle_set->type) {
+    if (type != handle_set->type)
+    {
         SMF_SetError("invalid handle");
         return NULL;
     }
 
     uint64_t ix = SMF_HANDLE_INDEX(handle);
-    if (ix >= handle_set->data_len) {
+    if (ix >= handle_set->data_len)
+    {
         SMF_SetError("invalid handle");
         return NULL;
     }
 
     SMF_HandleObject *obj = (SMF_HandleObject *)(handle_set->data + (ix * handle_set->data_size));
-    if (obj->handle != handle) {
+    if (obj->handle != handle)
+    {
         SMF_SetError("invalid handle");
         return NULL;
     }

@@ -21,17 +21,27 @@ int main(void)
     SMF_CreateWindow();
 
     SMF_Handle image = SMF_LoadImage("D:\\Assets.png");
+    SMF_Handle font = SMF_LoadTrueTypeFont("C:\\Windows\\fonts\\tahomabd.ttf", 12);
 
     SMF_Event evt;
-    while (1) {
-        if (SMF_PollEvent(&evt) == 1) {
-            if (evt.type == SMF_EVENT_TYPE_QUIT) {
+    while (1)
+    {
+        if (SMF_PollEvent(&evt) == 1)
+        {
+            if (evt.type == SMF_EVENT_TYPE_QUIT)
+            {
                 break;
-            } else if (evt.type == SMF_EVENT_TYPE_MOUSE_PRESS) {
+            }
+            else if (evt.type == SMF_EVENT_TYPE_MOUSE_PRESS)
+            {
                 printf("mouse press\n");
-            } else if (evt.type == SMF_EVENT_TYPE_MOUSE_CLICK) {
+            }
+            else if (evt.type == SMF_EVENT_TYPE_MOUSE_CLICK)
+            {
                 printf("mouse click\n");
-            } else if (evt.type == SMF_EVENT_TYPE_MOUSE_DOUBLE_CLICK) {
+            }
+            else if (evt.type == SMF_EVENT_TYPE_MOUSE_DOUBLE_CLICK)
+            {
                 printf("mouse double-click\n");
             }
         }

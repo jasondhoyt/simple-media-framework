@@ -37,23 +37,27 @@ void SMF_CleanImages(void)
 
 SMF_Handle SMF_LoadImage(const char *path)
 {
-    if (SMF_IsInitialized() == -1) {
+    if (SMF_IsInitialized() == -1)
+    {
         return SMF_INVALID_HANDLE;
     }
 
-    if (!path) {
+    if (!path)
+    {
         SMF_InvalidArgError("path");
         return SMF_INVALID_HANDLE;
     }
 
     SDL_Surface *surface = IMG_Load(path);
-    if (!surface) {
+    if (!surface)
+    {
         SMF_SDLError();
         return SMF_INVALID_HANDLE;
     }
 
     SMF_Image *image = SMF_CreateHandle(&g_images);
-    if (!image) {
+    if (!image)
+    {
         SDL_FreeSurface(surface);
         return SMF_INVALID_HANDLE;
     }
@@ -64,19 +68,23 @@ SMF_Handle SMF_LoadImage(const char *path)
 
 static int ValidateImageDef(const SMF_ImageDef *def, SDL_Surface *surface)
 {
-    if (def->x < 0 || def->y < 0) {
+    if (def->x < 0 || def->y < 0)
+    {
         return -1;
     }
 
-    if (def->x >= surface->w || def->y >= surface->h) {
+    if (def->x >= surface->w || def->y >= surface->h)
+    {
         return -1;
     }
 
-    if (def->w <= 0 || def->h <= 0) {
+    if (def->w <= 0 || def->h <= 0)
+    {
         return -1;
     }
 
-    if (def->x + def->w > surface->w || def->y + def->h > surface->h) {
+    if (def->x + def->w > surface->w || def->y + def->h > surface->h)
+    {
         return -1;
     }
 
@@ -85,42 +93,51 @@ static int ValidateImageDef(const SMF_ImageDef *def, SDL_Surface *surface)
 
 int SMF_LoadImageSet(const char *path, int count, const SMF_ImageDef *defs, SMF_Handle *handles)
 {
-    if (SMF_IsInitialized() == -1) {
+    if (SMF_IsInitialized() == -1)
+    {
         return -1;
     }
 
-    if (!path) {
+    if (!path)
+    {
         return SMF_InvalidArgError("path");
     }
 
-    if (count <= 0) {
+    if (count <= 0)
+    {
         return SMF_InvalidArgError("count");
     }
 
-    if (!defs) {
+    if (!defs)
+    {
         return SMF_InvalidArgError("defs");
     }
 
-    if (!handles) {
+    if (!handles)
+    {
         return SMF_InvalidArgError("handles");
     }
 
     SDL_Surface *surface = IMG_Load(path);
-    if (!surface) {
+    if (!surface)
+    {
         return SMF_SDLError();
     }
 
     memset(handles, 0, sizeof(SMF_Handle) * count);
 
-    for (int ix = 0; ix < count; ++ix) {
-        if (ValidateImageDef(defs + ix, surface) == -1) {
+    for (int ix = 0; ix < count; ++ix)
+    {
+        if (ValidateImageDef(defs + ix, surface) == -1)
+        {
             SDL_FreeSurface(surface);
             return SMF_InvalidArgError("defs");
         }
 
         SDL_Surface *new_surface = SDL_CreateRGBSurfaceWithFormat(
             0, defs[ix].w, defs[ix].h, surface->format->BitsPerPixel, surface->format->format);
-        if (!new_surface) {
+        if (!new_surface)
+        {
             SDL_FreeSurface(surface);
             return SMF_SDLError();
         }
@@ -129,7 +146,8 @@ int SMF_LoadImageSet(const char *path, int count, const SMF_ImageDef *defs, SMF_
         SDL_BlitSurface(surface, &src, new_surface, NULL);
 
         SMF_Image *img = SMF_CreateHandle(&g_images);
-        if (!img) {
+        if (!img)
+        {
             SDL_FreeSurface(new_surface);
             SDL_FreeSurface(surface);
             return -1;
@@ -145,20 +163,24 @@ int SMF_LoadImageSet(const char *path, int count, const SMF_ImageDef *defs, SMF_
 
 int SMF_GetImageSize(SMF_Handle image, int *w, int *h)
 {
-    if (SMF_IsInitialized() == -1) {
+    if (SMF_IsInitialized() == -1)
+    {
         return -1;
     }
 
     SMF_Image *img = SMF_FindHandleObject(&g_images, image);
-    if (!img) {
+    if (!img)
+    {
         return -1;
     }
 
-    if (w) {
+    if (w)
+    {
         *w = img->surface->w;
     }
 
-    if (h) {
+    if (h)
+    {
         *h = img->surface->h;
     }
 
@@ -168,9 +190,22 @@ int SMF_GetImageSize(SMF_Handle image, int *w, int *h)
 SDL_Surface *SMF_GetImageSurface(uint64_t handle)
 {
     SMF_Image *image = SMF_FindHandleObject(&g_images, handle);
-    if (!image) {
+    if (!image)
+    {
         return NULL;
     }
 
     return image->surface;
+}
+
+SMF_Handle SMF_CreateImageFromSurface(SDL_Surface *surface)
+{
+    SMF_Image *image = SMF_CreateHandle(&g_images);
+    if (!image)
+    {
+        return SMF_INVALID_HANDLE;
+    }
+
+    image->surface = surface;
+    return image->base.handle;
 }

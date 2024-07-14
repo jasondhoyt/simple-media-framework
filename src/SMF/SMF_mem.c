@@ -8,7 +8,8 @@
 void *SMF_Calloc(size_t count, size_t size)
 {
     void *ptr = calloc(count, size);
-    if (!ptr) {
+    if (!ptr)
+    {
         SMF_SetError("out of memory");
         return NULL;
     }
@@ -18,7 +19,8 @@ void *SMF_Calloc(size_t count, size_t size)
 
 void SMF_Free(void *ptr)
 {
-    if (ptr) {
+    if (ptr)
+    {
         free(ptr);
     }
 }

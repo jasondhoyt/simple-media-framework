@@ -6,11 +6,13 @@
 #include <string.h>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "SMF/SMF.h"
 
 #include "SMF_context.h"
 
+#include "SMF_font.h"
 #include "SMF_image.h"
 #include "SMF_window.h"
 
@@ -23,15 +25,33 @@ static void *g_error_cb_data = NULL;
 
 int SMF_Init(void)
 {
-    if (g_initialized == 1) {
+    if (g_initialized == 1)
+    {
         return 0;
     }
 
-    if (SDL_Init(SDL_INIT_VIDEO) == -1) {
+    if (SDL_Init(SDL_INIT_VIDEO) == -1)
+    {
         return SMF_SDLError();
     }
 
-    if (SMF_InitImages() == -1) {
+    if (TTF_Init() == -1)
+    {
+        SDL_Quit();
+        return SMF_SDLError();
+    }
+
+    if (SMF_InitImages() == -1)
+    {
+        TTF_Quit();
+        SDL_Quit();
+        return -1;
+    }
+
+    if (SMF_InitFonts() == -1)
+    {
+        SMF_CleanImages();
+        TTF_Quit();
         SDL_Quit();
         return -1;
     }
@@ -43,13 +63,16 @@ int SMF_Init(void)
 
 void SMF_Quit(void)
 {
-    if (g_initialized == 0) {
+    if (g_initialized == 0)
+    {
         return;
     }
 
+    SMF_CleanFonts();
     SMF_CleanImages();
     SMF_CleanupWindow();
 
+    TTF_Quit();
     SDL_Quit();
 
     g_initialized = 0;
@@ -73,7 +96,8 @@ int SMF_SetError(const char *format, ...)
     vsnprintf(g_error_buf, sizeof(g_error_buf), format, ap);
     va_end(ap);
 
-    if (g_error_cb) {
+    if (g_error_cb)
+    {
         g_error_cb(g_error_buf, g_error_cb_data);
     }
 
@@ -90,7 +114,8 @@ int SMF_SDLError(void)
     const char *buf = SDL_GetError();
     size_t size = strlen(buf);
 
-    if (size > SMF_ERROR_BUF_SIZE - 1) {
+    if (size > SMF_ERROR_BUF_SIZE - 1)
+    {
         size = SMF_ERROR_BUF_SIZE - 1;
     }
 
@@ -100,7 +125,8 @@ int SMF_SDLError(void)
 
 int SMF_IsInitialized(void)
 {
-    if (g_initialized == 0) {
+    if (g_initialized == 0)
+    {
         SMF_SetError("library not initialized");
         return -1;
     }

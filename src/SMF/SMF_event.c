@@ -13,7 +13,8 @@ static SMF_Event g_saved_event;
 
 static int MapMouseButton(int sdl_button, SMF_MouseButton *out)
 {
-    switch (sdl_button) {
+    switch (sdl_button)
+    {
     case SDL_BUTTON_LEFT:
         *out = SMF_MOUSE_BUTTON_LEFT;
         return 0;
@@ -34,15 +35,18 @@ static SMF_KeyMod MapKeyModifiers(int mods)
 {
     int out = 0;
 
-    if ((mods & KMOD_SHIFT) != 0) {
+    if ((mods & KMOD_SHIFT) != 0)
+    {
         out |= SMF_KEY_MOD_SHIFT;
     }
 
-    if ((mods & KMOD_ALT) != 0) {
+    if ((mods & KMOD_ALT) != 0)
+    {
         out |= SMF_KEY_MOD_ALT;
     }
 
-    if ((mods & KMOD_CTRL) != 0) {
+    if ((mods & KMOD_CTRL) != 0)
+    {
         out |= SMF_KEY_MOD_CTRL;
     }
 
@@ -51,29 +55,36 @@ static SMF_KeyMod MapKeyModifiers(int mods)
 
 int SMF_PollEvent(SMF_Event *event)
 {
-    if (SMF_IsInitialized() == -1) {
+    if (SMF_IsInitialized() == -1)
+    {
         return -1;
     }
 
-    if (SMF_IsWindowCreated() == -1) {
+    if (SMF_IsWindowCreated() == -1)
+    {
         return -1;
     }
 
-    if (!event) {
+    if (!event)
+    {
         return SMF_InvalidArgError("event");
     }
 
-    if (g_is_event_saved) {
+    if (g_is_event_saved)
+    {
         *event = g_saved_event;
         g_is_event_saved = 0;
         return 1;
     }
 
     SDL_Event e;
-    while (SDL_PollEvent(&e)) {
-        switch (e.type) {
+    while (SDL_PollEvent(&e))
+    {
+        switch (e.type)
+        {
         case SDL_WINDOWEVENT:
-            switch (e.window.event) {
+            switch (e.window.event)
+            {
             case SDL_WINDOWEVENT_CLOSE:
                 event->type = SMF_EVENT_TYPE_QUIT;
                 return 1;
@@ -108,12 +119,14 @@ int SMF_PollEvent(SMF_Event *event)
             return 1;
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP:
-            if (MapMouseButton(e.button.button, &event->mouse_button.button) == 0) {
+            if (MapMouseButton(e.button.button, &event->mouse_button.button) == 0)
+            {
                 event->type = e.type == SDL_MOUSEBUTTONDOWN ? SMF_EVENT_TYPE_MOUSE_PRESS : SMF_EVENT_TYPE_MOUSE_RELEASE;
                 event->mouse_move.x = e.button.x;
                 event->mouse_move.y = e.button.y;
 
-                if (e.type == SDL_MOUSEBUTTONDOWN) {
+                if (e.type == SDL_MOUSEBUTTONDOWN)
+                {
                     g_is_event_saved = 1;
                     g_saved_event.type =
                         e.button.clicks % 2 == 0 ? SMF_EVENT_TYPE_MOUSE_DOUBLE_CLICK : SMF_EVENT_TYPE_MOUSE_CLICK;
